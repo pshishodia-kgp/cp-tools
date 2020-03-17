@@ -1,18 +1,18 @@
 import React from 'react'; 
-import {NavLink} from 'react-router-dom'; 
-import {logo} from '../logo.svg'
-import {Navbar, Nav} from 'react-bootstrap'; 
+// import {NavLink} from 'react-router-dom'; 
+import Logo from '../static/media/logo.svg';
+import {Nav, Navbar} from 'react-bootstrap'
 
 
 const NavBar = () => {
-    return (  
-        <Navbar bg="primary" variant="dark">
-        <Navbar.Brand href="#home"> <img src = {logo} className = "cp-tools-logo" /> </Navbar.Brand>
-        <Nav className="mr-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#features">Features</Nav.Link>
-          <Nav.Link href="#pricing">Pricing</Nav.Link>
-        </Nav>
+    return (
+        <Navbar bg="light" variant="light">
+            <Navbar.Brand href="/"><img src = {Logo} alt = "CP-Tools"/>   </Navbar.Brand>
+            <Nav className="justify-content-end" variant = "pills">
+                <Nav.Item> <Nav.Link href="/">Home</Nav.Link> </Nav.Item>
+                <Nav.Item> <Nav.Link href="/"> Problem Filter</Nav.Link> </Nav.Item>
+                <Nav.Item> <Nav.Link href="/">Recommendation</Nav.Link> </Nav.Item>
+            </Nav>
       </Navbar>
     )
 }
