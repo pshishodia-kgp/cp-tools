@@ -1,6 +1,9 @@
 // Users submission aggregating functions 
+import {data} from './problemFile.js';
+console.log(data);
+// var data = [{'name' : 'prashant'}]; 
 var invalidUsers = []; 
-var problemSet = [];
+var problemSet = data; 
 var userList = [{handle : 'Black.n.White'}, {handle : 'TheLethalCode'}, {handle : 'TheFenrir'}, {handle : 'TheFool'}]; 
 // var userList = [] ; 
 const fetchUserData = async (user) =>{
@@ -69,7 +72,9 @@ const fetchContests = async () => {
 }
 
 const getProblemSet = async () => {
+    console.log('problemSet : ', problemSet); 
     if(problemSet.length)return problemSet;
+
     let response = await Promise.all([
         fetchProblemSet(), 
         fetchContests(),
@@ -103,14 +108,15 @@ const getValidProblems = async (solved) => {
 }
 
 const filterProblems= (problems, filterSpecs) => {
-    return problems.filter(problem => {
+    console.log('filterProblemsCalled'); 
+    return problems.filter( (problem) => {
         for(let tag of filterSpecs.tags){
-            if(!(tag in problem.tags))return false; 
+            if(problem.tags.indexOf(tag) === -1)return false; 
         }
-        if(!(problem.difficulty))return false; 
-        if(parseInt(problem.difficulty) < parseInt(filterSpecs.lowerDiff))return false; 
-        if(parseInt(problem.difficulty) > parseInt(filterSpecs.upperDiff))return false; 
-        if(parseInt(problem.contestId) <= parseInt(filterSpecs.baseRound))return false;
+        if(!(problem.rating))return false; 
+        if(filterSpecs.lowerDiff && filterSpecs.lowerDiff.length && parseInt(problem.rating) < parseInt(filterSpecs.lowerDiff))return false; 
+        if(filterSpecs.upperDiff && filterSpecs.upperDiff.length && parseInt(problem.rating) > parseInt(filterSpecs.upperDiff))return false; 
+        if(filterSpecs.baseRound && filterSpecs.baseRound.length && parseInt(problem.contestId) <= parseInt(filterSpecs.baseRound))return false;
         return true; 
     }); 
 }

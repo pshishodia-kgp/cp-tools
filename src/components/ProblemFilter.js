@@ -1,6 +1,8 @@
 import React from 'react'; 
-import {getUserList} from '../data/Functions';  
-import {fetchSuggestions} from '../data/Functions'; 
+import {getUserList} from '../data/Functions'; 
+import {Table} from 'react-bootstrap' 
+import {fetchSuggestions, getValidProblems, getSolved, filterProblems} from '../data/Functions'; 
+
 
 class ProblemFilter extends React.Component{
     constructor(props){
@@ -8,22 +10,28 @@ class ProblemFilter extends React.Component{
         this.state = {
             filter : {
                 tags : [], 
-                lowerDiff : 0, 
-                upperDiff : 4000,
-                baseRound : 0,
+                lowerDiff : '', 
+                upperDiff : '',
+                baseRound : '',
             }, 
             problems : [],
             users : [],
             currentUser : '', 
             suggestions : [],
+            solved : [],
         }
-        this.userList = []; 
+        this.userList = [];
         this.maxSuggestions = 10; 
         this.userSearch = React.createRef(); 
+        this.problems = [];
     }
 
-    componentDidMount(){
-        this.userList =  getUserList();
+    componentDidMount = async () => {
+        this.userList = await  getUserList();
+        this.problems = await getValidProblems({}); 
+        this.setState({
+            problems : this.problems,
+        });
     }
 
     updateSuggestions = async (query) => {
@@ -49,7 +57,6 @@ class ProblemFilter extends React.Component{
 
     fillUser = (event) => {
         event.preventDefault(); 
-        console.log(event); 
         let node = this.userSearch.current;
         let user = event.target.innerHTML.toString(); 
         let text = node.value.toString(); 
@@ -57,7 +64,7 @@ class ProblemFilter extends React.Component{
 
         node.focus();    
         node.value = newText; this.handleUserChange(); 
-        console.log(text,text.length,  user, user.length, newText, newText.length);  
+       // //console.log(text,text.length,  user, user.length, newText, newText.length);  
     }
 
     showSuggestions = () => {
@@ -81,7 +88,7 @@ class ProblemFilter extends React.Component{
         let option = select.options[select.selectedIndex]; 
         let tag = option.getAttribute('value'); 
         if(!tag || !tag.length)return; 
-        if(this.state.filter.tags.indexOf(tag) == -1){
+        if(this.state.filter.tags.indexOf(tag) === -1){
             let newFilter = this.state.filter; 
             newFilter.tags.push(tag); 
             this.setState({
@@ -89,6 +96,7 @@ class ProblemFilter extends React.Component{
             });
         }
     }
+
     showSelectedTags = () => {
         let tagList = this.state.filter.tags.map((tag) => {
             return(
@@ -100,16 +108,73 @@ class ProblemFilter extends React.Component{
                 <span>&nbsp;&nbsp;</span> 
                 </span> 
             );
-        })
+        });
         return (
             <div> {tagList} </div> 
         ); 
+        }
+
+    ProblemSet = () => {
+        if(!this.state.problems){
+            return (<div> </div> ); 
+        }
+        //console.log('problem', this.state.problems); 
+        let tableRows = this.state.problems.map((problem) => {
+            let url = "https://codeforces.com/problemset/problem/" + problem.contestId.toString() + '/' + problem.index.toString(); 
+            let tagList = problem.tags.map((tag) => <span style = {{'text-decorations' : 'none'}}>{tag}, </span> );
+            return(
+                <tr> 
+                    <td> {problem.contestId.toString() + problem.index.toString()} </td> 
+                    <td>
+                        <div style={{'float' : 'left'}}>
+                            <a href = {url} target = "_blank"> {problem.name} </a>
+                        </div>
+                        <div style={{'float': 'right', 'font-size' : '0.8rem', 'padding-top' : '1px', 'text-align' : 'right'}}>
+                            {tagList}
+                        </div>
+                    </td>
+                    <td> {problem.rating} </td> 
+                </tr> 
+            )
+        }); 
+        return (
+            <Table striped bordered> 
+                <thead> 
+                    <tr> 
+                        <th> # </th> 
+                        <th> Name </th> 
+                        <th> Rating </th> 
+                    </tr> 
+                </thead> 
+                <tbody> 
+                {tableRows}
+                </tbody>
+            </Table> 
+        )
+    }
+
+    handleSubmit = async (event) => {
+        console.log(this.state.filter); 
+        event.preventDefault(); 
+        let problems = await filterProblems(this.problems, this.state.filter);
+        this.setState({
+            problems : problems,
+        });
+    }
+
+    handleInputChange = (event) => {
+        let node = event.target; 
+        let newFilter = this.state.filter;
+        newFilter[node.name] = node.value; 
+        this.setState({
+            filter : newFilter,
+        });
     }
 
     Form = () => {
         return (
             <div> 
-            <form>
+            <form onSubmit = {this.handleSubmit}>
                 <label htmlFor ="search-bar"> Users : <input type = "text" ref = {this.userSearch} placeholder = "Space separated user-names" onChange = {this.handleUserChange} />
                     {this.showSuggestions()} 
                 </label> 
@@ -119,8 +184,8 @@ class ProblemFilter extends React.Component{
                     <span> Tags </span>
                     <select onClick = {this.addTag}>
                         <option value=""></option>
-                        combine-tags-by-or
-                        <option value="combine-tags-by-or" title="*combine tags by OR">*combine tags by OR</option>
+                        {/* combine-tags-by-or */}
+                        {/* <option value="combine-tags-by-or" title="*combine tags by OR">*combine tags by OR</option> */}
                             <option value="2-sat" title="2-satisfiability">2-sat</option>
                             <option value="binary search" title="Binary search">binary search</option>
                             <option value="bitmasks" title="Bitmasks">bitmasks</option>
@@ -157,22 +222,23 @@ class ProblemFilter extends React.Component{
                             <option value="ternary search" title="Ternary search">ternary search</option>
                             <option value="trees" title="Trees">trees</option>
                             <option value="two pointers" title="Two pointers">two pointers</option>
-                    </select>
+                    </select>   
                 </label>
 
 
                 <label for = "baseRound"> 
                     <span> BaseRound : </span> 
-                    <input type = "number" placeholder = "Base Round in numbers" /> 
+                    <input type = "number" name = "baseRound" onChange = {this.handleInputChange} placeholder = "Base Round in numbers" /> 
                 </label>
 
 
                 <label for = "Difficulty"> 
                     <span> Difficulty </span> 
-                    <input type = "number" /> 
+                    <input type = "number" name = "lowerDiff" onChange = {this.handleInputChange}/> 
                     <span> &nbsp; - &nbsp; </span>
-                    <input type = "number" />  
+                    <input type = "number" name = "upperDiff" onChange = {this.handleInputChange} />  
                 </label>
+                <button type = "submit"> Filter Problems !</button> 
 
             </form> 
             </div> 
@@ -183,6 +249,7 @@ class ProblemFilter extends React.Component{
         return (
             <div>
                 {this.Form()}
+                {this.ProblemSet()}
             </div> 
         )
     }
