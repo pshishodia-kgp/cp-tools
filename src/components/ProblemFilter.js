@@ -19,6 +19,7 @@ class ProblemFilter extends React.Component{
             currentUser : '', 
             suggestions : [],
             solved : [],
+            tags : true,
         }
         this.userList = [];
         this.maxSuggestions = 10; 
@@ -112,16 +113,29 @@ class ProblemFilter extends React.Component{
         return (
             <div> {tagList} </div> 
         ); 
-        }
+    }
+
+    sortProblems = () => {
+        console.log('inside sort problems'); 
+        let problems = this.state.problems.sort(function(a, b){
+            if(a.rating === b.rating)return  parseInt(b.contestId) - parseInt(a.contestId); 
+            return parseInt(a.rating) - parseInt(b.rating); 
+        });
+        this.setState({
+            problems : problems,
+        });
+    }
 
     ProblemSet = () => {
+        console.log(this.state.tags); 
         if(!this.state.problems){
             return (<div> </div> ); 
         }
         //console.log('problem', this.state.problems); 
         let tableRows = this.state.problems.map((problem) => {
             let url = "https://codeforces.com/problemset/problem/" + problem.contestId.toString() + '/' + problem.index.toString(); 
-            let tagList = problem.tags.map((tag) => <span style = {{'text-decorations' : 'none'}}>{tag}, </span> );
+            let tagList = (!this.state.tags)? (<div> </div>)
+                                            : problem.tags.map((tag) => <span style = {{'text-decorations' : 'none'}}>{tag}, </span> );
             return(
                 <tr> 
                     <td> {problem.contestId.toString() + problem.index.toString()} </td> 
@@ -138,18 +152,21 @@ class ProblemFilter extends React.Component{
             )
         }); 
         return (
+            <div> 
+                <span>Total problems : {this.state.problems.length} </span> 
             <Table striped bordered> 
                 <thead> 
                     <tr> 
                         <th> # </th> 
-                        <th> Name </th> 
-                        <th> Rating </th> 
+                        <th> Name <button onClick = {() => this.setState({tags : !this.state.tags})} >ToggleTags </button> </th> 
+                        <th> Rating <button onClick = {this.sortProblems}>Sort</button> </th> 
                     </tr> 
                 </thead> 
                 <tbody> 
                 {tableRows}
                 </tbody>
             </Table> 
+            </div> 
         )
     }
 
@@ -186,6 +203,11 @@ class ProblemFilter extends React.Component{
                         <option value=""></option>
                         {/* combine-tags-by-or */}
                         {/* <option value="combine-tags-by-or" title="*combine tags by OR">*combine tags by OR</option> */}
+                            <option value="educational" title="educational">educational</option>
+                            <option value="div1" title="div1">div1</option>
+                            <option value="div2" title="div2">div2</option>
+                            <option value="div3" title="div3">div3</option>
+                            <option value="combined" title="combined">combined</option>
                             <option value="2-sat" title="2-satisfiability">2-sat</option>
                             <option value="binary search" title="Binary search">binary search</option>
                             <option value="bitmasks" title="Bitmasks">bitmasks</option>
