@@ -1,32 +1,110 @@
 import React from 'react'; 
+import {getUserList} from '../data/Functions';  
+import {fetchSuggestions} from '../data/Functions'; 
 
 class ProblemFilter extends React.Component{
     constructor(props){
         super(props); 
         this.state = {
             filter : {
-                tags : [], 
+                tags : ['dfs', 'bfs', 'brute force'], 
                 lowerDiff : 0, 
                 upperDiff : 4000,
                 baseRound : 0,
             }, 
             problems : [],
             users : [],
+            currentUser : '', 
+            suggestions : [],
         }
+        this.userList = []; 
+        this.maxSuggestions = 10; 
+        this.userSearch = React.createRef(); 
     }
 
-    handleUserChange = () => {
-
+    componentDidMount(){
+        this.userList =  getUserList();
     }
+
+    updateSuggestions = async (query) => {
+        let result = await fetchSuggestions(query, this.maxSuggestions); 
+        this.setState({
+            suggestions : result,
+        });
+    }
+
+    handleUserChange = async () => {
+        let text = this.userSearch.current.value.toString();
+        let newUser = '';
+        if(!text || !text.length || text[text.length - 1] === ' ')newUser = '';  
+        else{
+            let arr = text.split(' '); 
+            newUser = arr[arr.length - 1]; 
+        }
+        this.setState({
+            currentUser : newUser, 
+        }); 
+        this.updateSuggestions(newUser); 
+    }
+
+    fillUser = (event) => {
+        event.preventDefault(); 
+        console.log(event); 
+        let node = this.userSearch.current;
+        let user = event.target.innerHTML.toString(); 
+        let text = node.value.toString(); 
+        let newText = text.substring(0, text.length - this.state.currentUser.length).concat(user).concat(' '); 
+
+        node.focus();    
+        node.value = newText; this.handleUserChange(); 
+        console.log(text,text.length,  user, user.length, newText, newText.length);  
+    }
+
+    showSuggestions = () => {
+        let handleList = this.state.suggestions.map((handle) => <li className = "user-suggestions" onClick = {this.fillUser}>{handle}</li> ); 
+        return (
+            <ul> {handleList} </ul> 
+        )
+    }
+
+    // removeTag = (event) => {
+    //     let tag = event.target.value; 
+    //     console.log(event.target, event.target.value); 
+    //     console.log('Remove tag : ', tag); 
+    //     let newFilter = this.state.filter; 
+    //     newFilter.tags = this.state.filter.tags.filter((currTag) => tag !== currTag);
+    //     this.setState({
+    //         filter : newFilter, 
+    //     });
+    // }
+
+    // showSelectedTags = () => {
+    //     let tagList = this.state.filter.tags.map((tag) => {
+    //         return(
+    //             <span> 
+    //             <span  style = {{'background-color' : 'grey'}}> 
+    //                 <span> {tag} </span>
+    //                 <span value = {tag} onClick = {this.removeTag}>&#10007;  </span>  
+    //             </span> 
+    //             <span>&nbsp;&nbsp;</span> 
+    //             </span> 
+    //         );
+    //     })
+    //     return (
+    //         <div> {tagList} </div> 
+    //     ); 
+    // }
 
     Form = () => {
         return (
             <div> 
             <form>
-                <label for ="search-bar"> Users : <input type = "text" placeholder = "Space separated user-names" onChange = {this.handleUserChange} /> </label> 
+                <label htmlFor ="search-bar"> Users : <input type = "text" ref = {this.userSearch} placeholder = "Space separated user-names" onChange = {this.handleUserChange} />
+                    {this.showSuggestions()} 
+                </label> 
 
-                
                 <label for = "tags">
+                    {/* {this.showSelectedTags()} */}
                     <span> Tags </span>
                     <select>
                         <option value=""></option>
