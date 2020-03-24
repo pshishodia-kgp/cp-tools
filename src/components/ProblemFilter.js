@@ -7,7 +7,7 @@ class ProblemFilter extends React.Component{
         super(props); 
         this.state = {
             filter : {
-                tags : ['dfs', 'bfs', 'brute force'], 
+                tags : [], 
                 lowerDiff : 0, 
                 upperDiff : 4000,
                 baseRound : 0,
@@ -67,33 +67,44 @@ class ProblemFilter extends React.Component{
         )
     }
 
-    // removeTag = (event) => {
-    //     let tag = event.target.value; 
-    //     console.log(event.target, event.target.value); 
-    //     console.log('Remove tag : ', tag); 
-    //     let newFilter = this.state.filter; 
-    //     newFilter.tags = this.state.filter.tags.filter((currTag) => tag !== currTag);
-    //     this.setState({
-    //         filter : newFilter, 
-    //     });
-    // }
+    removeTag = (event) => {
+        let tag = event.target.getAttribute('value'); 
+        let newFilter = this.state.filter; 
+        newFilter.tags = this.state.filter.tags.filter((currTag) => tag !== currTag);
+        this.setState({
+            filter : newFilter, 
+        });
+    }
 
-    // showSelectedTags = () => {
-    //     let tagList = this.state.filter.tags.map((tag) => {
-    //         return(
-    //             <span> 
-    //             <span  style = {{'background-color' : 'grey'}}> 
-    //                 <span> {tag} </span>
-    //                 <span value = {tag} onClick = {this.removeTag}>&#10007;  </span>  
-    //             </span> 
-    //             <span>&nbsp;&nbsp;</span> 
-    //             </span> 
-    //         );
-    //     })
-    //     return (
-    //         <div> {tagList} </div> 
-    //     ); 
-    // }
+    addTag = (event) => {
+        let select = event.target;
+        let option = select.options[select.selectedIndex]; 
+        let tag = option.getAttribute('value'); 
+        if(!tag || !tag.length)return; 
+        if(this.state.filter.tags.indexOf(tag) == -1){
+            let newFilter = this.state.filter; 
+            newFilter.tags.push(tag); 
+            this.setState({
+                filter : newFilter,
+            });
+        }
+    }
+    showSelectedTags = () => {
+        let tagList = this.state.filter.tags.map((tag) => {
+            return(
+                <span> 
+                <span  style = {{'background-color' : 'grey'}}> 
+                    <span> {tag} </span>
+                    <span value = {tag} onClick = {this.removeTag}>&#10007;  </span>  
+                </span> 
+                <span>&nbsp;&nbsp;</span> 
+                </span> 
+            );
+        })
+        return (
+            <div> {tagList} </div> 
+        ); 
+    }
 
     Form = () => {
         return (
@@ -104,9 +115,9 @@ class ProblemFilter extends React.Component{
                 </label> 
 
                 <label for = "tags">
-                    {/* {this.showSelectedTags()} */}
+                    {this.showSelectedTags()}
                     <span> Tags </span>
-                    <select>
+                    <select onClick = {this.addTag}>
                         <option value=""></option>
                         combine-tags-by-or
                         <option value="combine-tags-by-or" title="*combine tags by OR">*combine tags by OR</option>
