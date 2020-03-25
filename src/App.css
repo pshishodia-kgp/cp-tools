@@ -29,7 +29,49 @@
 }
 
 .user-suggestions:hover{
-  background-color : blue;
+  background-color : lightblue;
+}
+
+._selectedTags{
+  background-color : lightgrey;  
+}
+.form-rounded{
+  border-radius : 0.2rem; 
+  padding : 2px 2px 2px 2px; 
+  margin : 5px 5px 5px 5px;
+}
+
+input{
+  width : 100%; 
+  float : left; 
+}
+select{
+  width : 100%; 
+  float : left; 
+}
+
+label{
+  display : block; 
+  padding : 2px 2px 2px 2px; 
+  margin : 5px 5px 5px 5px;
+  float : left; 
+}
+
+.well{
+  border-radius : 0.2rem;
+  border : solid grey; 
+  padding : 10px 10px 10px 10px;
+  margin : 10px 10px 10px 10px; 
+}
+
+form button{
+  text-align : center;
+}
+.table{
+  
+}
+button{
+  border-radius : 0.2rem;  
 }
 @keyframes App-logo-spin {
   from {

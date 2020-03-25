@@ -1,6 +1,6 @@
 import React from 'react'; 
 import {getUserList} from '../data/Functions'; 
-import {Table} from 'react-bootstrap' 
+import {Table, Container, Row, Col} from 'react-bootstrap' 
 import {fetchSuggestions, getValidProblems, getSolved, filterProblems} from '../data/Functions'; 
 
 
@@ -9,13 +9,13 @@ class ProblemFilter extends React.Component{
         super(props); 
         this.state = {
             filter : {
-                tags : [], 
-                lowerDiff : '', 
-                upperDiff : '',
+                tags : ['educational'], 
+                lowerDiff : '2000', 
+                upperDiff : '2100',
                 baseRound : '',
             }, 
             problems : [],
-            users : [],
+            users : ['Black.n.White',],
             currentUser : '', 
             suggestions : [],
             solved : [],
@@ -29,9 +29,9 @@ class ProblemFilter extends React.Component{
 
     componentDidMount = async () => {
         this.userList = await  getUserList();
-        this.problems = await getValidProblems({}); 
+        this.problems = await getValidProblems({});
         this.setState({
-            problems : this.problems,
+            problems : this.problems.slice(1, 50),
         });
     }
 
@@ -52,6 +52,7 @@ class ProblemFilter extends React.Component{
         }
         this.setState({
             currentUser : newUser, 
+            users : text.split(' '),
         }); 
         this.updateSuggestions(newUser); 
     }
@@ -102,7 +103,7 @@ class ProblemFilter extends React.Component{
         let tagList = this.state.filter.tags.map((tag) => {
             return(
                 <span> 
-                <span  style = {{'background-color' : 'grey'}}> 
+                <span  className = "_selectedTags"> 
                     <span> {tag} </span>
                     <span value = {tag} onClick = {this.removeTag}>&#10007;  </span>  
                 </span> 
@@ -116,7 +117,6 @@ class ProblemFilter extends React.Component{
     }
 
     sortProblems = () => {
-        console.log('inside sort problems'); 
         let problems = this.state.problems.sort(function(a, b){
             if(a.rating === b.rating)return  parseInt(b.contestId) - parseInt(a.contestId); 
             return parseInt(a.rating) - parseInt(b.rating); 
@@ -127,7 +127,6 @@ class ProblemFilter extends React.Component{
     }
 
     ProblemSet = () => {
-        console.log(this.state.tags); 
         if(!this.state.problems){
             return (<div> </div> ); 
         }
@@ -154,7 +153,7 @@ class ProblemFilter extends React.Component{
         return (
             <div> 
                 <span>Total problems : {this.state.problems.length} </span> 
-            <Table striped bordered> 
+            <Table className = "table" striped bordered style = {{borderRadius : '5px'}}> 
                 <thead> 
                     <tr> 
                         <th> # </th> 
@@ -171,9 +170,13 @@ class ProblemFilter extends React.Component{
     }
 
     handleSubmit = async (event) => {
-        console.log(this.state.filter); 
         event.preventDefault(); 
-        let problems = await filterProblems(this.problems, this.state.filter);
+        console.log(this.state.filter, this.state.users); 
+        let resp = await getSolved(this.state.users); 
+        let solved = resp.solved; console.log('invalidUsers : ', resp.invalid); 
+        console.log(solved); 
+        let validProblems = await getValidProblems(solved); 
+        let problems = await filterProblems(validProblems, this.state.filter);
         this.setState({
             problems : problems,
         });
@@ -190,16 +193,22 @@ class ProblemFilter extends React.Component{
 
     Form = () => {
         return (
-            <div> 
-            <form onSubmit = {this.handleSubmit}>
-                <label htmlFor ="search-bar"> Users : <input type = "text" ref = {this.userSearch} placeholder = "Space separated user-names" onChange = {this.handleUserChange} />
-                    {this.showSuggestions()} 
-                </label> 
+            <div className = "well" style = {{'width' : '40%'}}> 
+            <Container> 
+            <form onSubmit = {this.handleSubmit} className = "form-rounded">
+                <Row> 
+                    <Col xs sm md lg = {4}> <label htmlFor ="search-bar"> Users : </label> </Col>
+                    <Col> <div> <input className = "form-rounded" type = "text" ref = {this.userSearch} placeholder = "Space separated user-names" onChange = {this.handleUserChange} />
+                        {this.showSuggestions()} 
+                        </div> 
+                    </Col> 
+                </Row>
 
-                <label for = "tags">
-                    {this.showSelectedTags()}
-                    <span> Tags </span>
-                    <select onClick = {this.addTag}>
+                <Row> 
+                <Col xs sm md lg = {4}> <label htmlFor = "tags"> <span> Tags : </span> </label></Col> 
+                    <Col>
+                        {this.showSelectedTags()}
+                     <select className = "form-rounded" onClick = {this.addTag}>
                         <option value=""></option>
                         {/* combine-tags-by-or */}
                         {/* <option value="combine-tags-by-or" title="*combine tags by OR">*combine tags by OR</option> */}
@@ -244,25 +253,30 @@ class ProblemFilter extends React.Component{
                             <option value="ternary search" title="Ternary search">ternary search</option>
                             <option value="trees" title="Trees">trees</option>
                             <option value="two pointers" title="Two pointers">two pointers</option>
-                    </select>   
-                </label>
+                    </select> 
+                    </Col>   
+                </Row> 
 
 
-                <label for = "baseRound"> 
-                    <span> BaseRound : </span> 
-                    <input type = "number" name = "baseRound" onChange = {this.handleInputChange} placeholder = "Base Round in numbers" /> 
-                </label>
+                <Row> 
+                <Col xs sm md lg = {4}> <label for = "baseRound"> <span> BaseRound : </span> </label> </Col> 
+                <Col> <input className = "form-rounded" type = "number" name = "baseRound" onChange = {this.handleInputChange} placeholder = "Base Round in numbers" /> </Col>  
+                </Row> 
 
-
-                <label for = "Difficulty"> 
-                    <span> Difficulty </span> 
-                    <input type = "number" name = "lowerDiff" onChange = {this.handleInputChange}/> 
+                <Row> 
+                <Col xs sm md lg = {4}> <label for = "Difficulty"> <span> Difficulty </span> </label> </Col>  
+                <Col> 
+                    <input className = "form-rounded" style = {{'width' : '40%'}} type = "number" name = "lowerDiff" onChange = {this.handleInputChange}/> 
                     <span> &nbsp; - &nbsp; </span>
-                    <input type = "number" name = "upperDiff" onChange = {this.handleInputChange} />  
-                </label>
-                <button type = "submit"> Filter Problems !</button> 
-
+                    <input className = "form-rounded" style = {{'width' : '40%'}} type = "number" name = "upperDiff" onChange = {this.handleInputChange} />  
+                </Col> 
+                </Row> 
+                
+                <Row> 
+                    <button type = "submit"> Filter Problems !</button> 
+                </Row> 
             </form> 
+            </Container> 
             </div> 
         )
     }

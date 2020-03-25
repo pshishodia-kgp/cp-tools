@@ -1,20 +1,23 @@
 // Users submission aggregating functions 
 import {data} from './problemFile.js';
-console.log(data);
+import {userSolved} from './userSolved.js'
+// console.log(data);
 // var data = [{'name' : 'prashant'}]; 
 var invalidUsers = []; 
 var problemSet = data; 
 var userList = [{handle : 'Black.n.White'}, {handle : 'TheLethalCode'}, {handle : 'TheFenrir'}, {handle : 'TheFool'}]; 
 // var userList = [] ; 
 const fetchUserData = async (user) =>{
+    return userSolved.result; 
      fetch(`https://codeforces.com/api/user.status?handle=${user}`)
     .then((resp) => (resp).json())
     .then( (resp) => {
+        console.log(user, resp); 
         if(resp.status.toString() !== "OK"){
             invalidUsers.push(user); 
             return []; 
         }else{
-            return resp.result; 
+            return resp.result;         
         }
     })
     .catch((err) => {
@@ -24,9 +27,18 @@ const fetchUserData = async (user) =>{
 
 const findSolved = async (users) => {
     let solved = {};
-    let promises = users.map(async (user) => {
+    // let promises = users.map(async (user) => await fetchUserData(user)); 
+    // promises.map(async (promise) => {
+    //     let content = await promise; 
+    //     if(!content || !content.length)return ;
+    //         for(let i = 0;i < content.length; ++i)if(content[i].verdict ==="OK"){
+    //             solved[content[i].problem.name] = "TRUE"; 
+    //         }
+    // });
+    users.map(async (user) => {
         let content = await fetchUserData(user); 
         
+        if(!content || !content.length)return ;
         for(let i = 0;i < content.length; ++i)if(content[i].verdict ==="OK"){
             solved[content[i].problem.name] = "TRUE"; 
         }
@@ -35,6 +47,7 @@ const findSolved = async (users) => {
 }
 
 const getSolved = async (users) => {
+    console.log('inside getSolved');
     let solved = await findSolved(users); 
     let data = {solved : solved, invalidUsers : invalidUsers}; 
     return data;
@@ -44,6 +57,7 @@ const getSolved = async (users) => {
 // functions for fetching problemSet
 
 const fetchProblemSet = async () => {
+    return userSolved; 
     fetch('http://codeforces.com/api/problemset.problems')
     .then(resp => resp.json())
     .then((resp) => {
@@ -72,7 +86,6 @@ const fetchContests = async () => {
 }
 
 const getProblemSet = async () => {
-    console.log('problemSet : ', problemSet); 
     if(problemSet.length)return problemSet;
 
     let response = await Promise.all([
@@ -108,7 +121,7 @@ const getValidProblems = async (solved) => {
 }
 
 const filterProblems= (problems, filterSpecs) => {
-    console.log('filterProblemsCalled'); 
+    console.log(filterSpecs); 
     return problems.filter( (problem) => {
         for(let tag of filterSpecs.tags){
             if(problem.tags.indexOf(tag) === -1)return false; 
@@ -123,7 +136,7 @@ const filterProblems= (problems, filterSpecs) => {
 
 const getUserList = async () => {
     if(userList.length)return userList; 
-    console.log("inside user list"); 
+    // console.log("inside user list"); 
     fetch('https://codeforces.com/api/user.ratedList')
     .then((resp) => console.log(resp.json()))
     .then((resp) => {
@@ -147,7 +160,7 @@ const fetchSuggestions = async (query, maxSuggestions) => {
     let users = await getUserList(); 
     let cnt = 0; 
     let result = []; 
-    console.log(users);
+    // console.log(users);
     if(!query || !query.length)return result; 
     query = query.toUpperCase(); 
 
