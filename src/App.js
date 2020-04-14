@@ -6,14 +6,11 @@ import NotFound from './components/NotFound'
 import ProblemFilter from './components/ProblemFilter'; 
 import {BrowserRouter, Switch, Route} from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logo from './logo.svg'
 
 function App() {
-  console.log(logo); 
   return (
     <div className="App">
       <BrowserRouter> 
-        {/* <img src = {logo} alt = "hi-logo" />  */}
         <NavBar />
         <Switch>
           <Route exact path = '/' component = {Home} /> 

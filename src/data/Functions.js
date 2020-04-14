@@ -5,8 +5,8 @@ import {userSolved} from './userSolved.js'
 // var data = [{'name' : 'prashant'}]; 
 var invalidUsers = []; 
 var problemSet = data; 
-var userList = [{handle : 'Black.n.White'}, {handle : 'TheLethalCode'}, {handle : 'TheFenrir'}, {handle : 'TheFool'}]; 
-// var userList = [] ; 
+// var userList = [{handle : 'Black.n.White'}, {handle : 'TheLethalCode'}, {handle : 'TheFenrir'}, {handle : 'TheFool'}]; 
+var userList = [] ; 
 const fetchUserData = async (user) =>{
     return userSolved.result; 
      fetch(`https://codeforces.com/api/user.status?handle=${user}`)
@@ -135,29 +135,43 @@ const filterProblems= (problems, filterSpecs) => {
 }
 
 const getUserList = async () => {
-    if(userList.length)return userList; 
+    // if(userList.length)return userList; 
     // console.log("inside user list"); 
-    fetch('https://codeforces.com/api/user.ratedList')
-    .then((resp) => console.log(resp.json()))
-    .then((resp) => {
-        if(resp.status.toString() !== "OK"){
-            console.log("status not ok while fetching user list"); 
-            userList = []; 
-            return []; 
-        }else{
-            console.log("Fetched the user list");
-            userList = resp.result; 
-            return resp.result; 
-        }
-    })
-    .catch((err) => {
-        console.log("Error : ", err, "while fetching userlist");
-        return [];
-    })
+    // fetch('https://codeforces.com/api/user.ratedList')
+    // .then((resp) => {console.log(resp); return resp.json()})
+    // .then((resp) => {
+    //     if(resp.status.toString() !== "OK"){
+    //         console.log("status not ok while fetching user list"); 
+    //         userList = []; 
+    //         return []; 
+    //     }else{
+    //         console.log("Fetched the user list : ", resp.result);
+    //         userList = resp.result; 
+    //         return resp.result; 
+    //     }
+    // })
+    // .catch((err) => {
+    //     console.log("Error : ", err, "while fetching userlist");
+    //     return [];
+    // })
+    if(userList.length)return userList; 
+    console.log('userList : ', userList); 
+    let resp = await fetch('https://codeforces.com/api/user.ratedList'); 
+    resp = await resp.json(); 
+    if(resp.status.toString() === "OK"){
+        console.log('fetched again, userList : ', userList); 
+        userList = resp.result; return resp.result; 
+    }
+    else return []; 
+    // console.log('whill start fetching'); 
+    // let resp = await fetch('https://codeforces.com/api/user.ratedList');
+    // console.log('fetched : ', resp);
+    // return resp.json().result; 
 }
 
 const fetchSuggestions = async (query, maxSuggestions) => {
     let users = await getUserList(); 
+    console.log('fetchSugg users : ', users);
     let cnt = 0; 
     let result = []; 
     // console.log(users);

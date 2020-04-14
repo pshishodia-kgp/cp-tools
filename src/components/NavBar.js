@@ -1,13 +1,10 @@
 import React from 'react'; 
-// import {NavLink} from 'react-router-dom'; 
 import logo from '../logo.svg';
 import {Nav, Navbar} from 'react-bootstrap'
 
 
 const NavBar = () => {
-    console.log(logo); 
     return (
-        <div> 
         <Navbar bg="light" variant="light">
             <Navbar.Brand href="/"> <img style = {{'height' : 'auto', 'width' :'50px',}} src = {logo} alt = "another" />  </Navbar.Brand>
             <Nav activekey = "/home" className="justify" variant = "pills">
@@ -17,7 +14,6 @@ const NavBar = () => {
                 <Nav.Item> <Nav.Link eventKey="Recommendation" href="/">Recommendation</Nav.Link> </Nav.Item>
             </Nav>
       </Navbar>
-      </div>
     )
 }
 
