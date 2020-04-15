@@ -25,7 +25,8 @@ export default class ProblemFilter extends React.Component{
         event.preventDefault();
         let resp = await getSolved(users); 
 
-        let solved = resp.solved; console.log('invalidUsers : ', resp.invalid); 
+        console.log('resp of solved in submissinos : ' ,resp); 
+        let solved = resp.solved; console.log('invalidUsers : ', resp.invalidUsers); 
         let validProblems = await getValidProblems(solved); 
         let problems = await filterProblems(validProblems, filter);
         this.setState({

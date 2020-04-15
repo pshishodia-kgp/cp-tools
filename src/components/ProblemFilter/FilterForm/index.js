@@ -13,7 +13,7 @@ export default class FilterForm extends React.Component{
                 upperDiff : '2100',
                 baseRound : '',
             },
-            users : [],
+            users : ['Black.n.White', 'TheFool'],
         } 
     }
 
@@ -64,7 +64,7 @@ export default class FilterForm extends React.Component{
                 </div>
                 
                 <div className = "form-group" >
-                    <Button type = "submit"> Filter Problems !</Button>
+                    <Button variant = "outline-primary" type = "submit"> Filter Problems !</Button>
                 </div> 
             </form> 
             </div> 

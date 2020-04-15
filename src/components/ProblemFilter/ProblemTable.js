@@ -66,7 +66,7 @@ export default class ProblemTable extends React.Component{
                     <th>
                         Name
                         {this.getIcon('name')}
-                        <Button variant = "dark" style = {{'float' : 'right'}} onClick = {() => this.setState({tags : !this.state.tags})} >ToggleTags </Button> 
+                        <Button variant = "outline-dark" style = {{'float' : 'right'}} onClick = {() => this.setState({tags : !this.state.tags})} >ToggleTags </Button> 
                     </th> 
 
                     <th>
