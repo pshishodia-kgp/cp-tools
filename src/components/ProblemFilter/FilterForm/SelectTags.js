@@ -6,6 +6,7 @@ export default class SelectTags extends React.Component{
         this.state = {
             tags : [],
         }
+        this.options = []
     }
     removeTag = (event) => {
         let tag = event.target.getAttribute('value'); 
@@ -47,7 +48,7 @@ export default class SelectTags extends React.Component{
 
     render(){
         return(
-            <div> 
+            <React.Fragment> 
                 {this.showSelectedTags()}
                 <select className = "form-rounded" onClick = {this.addTag}>
                 <option value=""></option>
@@ -95,7 +96,7 @@ export default class SelectTags extends React.Component{
                     <option value="trees" title="Trees">trees</option>
                     <option value="two pointers" title="Two pointers">two pointers</option>
             </select>
-           </div> 
+           </React.Fragment> 
         )
     }
 }
