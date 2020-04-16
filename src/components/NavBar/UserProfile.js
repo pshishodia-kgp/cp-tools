@@ -15,7 +15,6 @@ export default class UserProfile extends React.Component{
 
     login = async () => {
         let username = this.usernameRef.current.value; 
-        console.log('username is : ', username); 
         let resp = await fetch(`https://codeforces.com/api/user.info?handles=${username}`); 
         let data = await resp.json(); 
         if(data.status === "OK"){
@@ -32,10 +31,9 @@ export default class UserProfile extends React.Component{
     }
 
     profilePic = () => {
-        console.log('profilePicUrl : ', this.state.user, 'url : ', this.state.user.titlePhoto);
         return(
-            <React.Fragment> 
-                <Image src = {`https:${this.state.user.titlePhoto}`} style = {{'height' : 'auto', 'width' :'50px', 'float' : 'right',}} roundedCircle/>
+            <React.Fragment style = {{'float' : 'right'}}> 
+                <Image src = {`https:${this.state.user.titlePhoto}`} style = {{'height' : 'auto', 'width' :'40px', 'float' : 'right',}} roundedCircle/>
                 <Button variant = "outline-primary" onClick = {this.logout}> Logout </Button> 
             </React.Fragment>
         )
@@ -54,7 +52,6 @@ export default class UserProfile extends React.Component{
         let element; 
         if(this.state.user)element = this.profilePic; 
         else element = this.searchBar; 
-        console.log('element : ', element); 
         return(
             <Form inline style = {{'float' : 'right'}}> 
                 {element()}

@@ -73,6 +73,13 @@ form button{
 .table{
   
 }
+
+.accepted-problem{
+  background-color : #d4edc9 !important;
+}
+.rejected-problem{
+  background-color : #ffe3e3 !important; 
+}
 button{
   border-radius : 0.2rem;  
 }
