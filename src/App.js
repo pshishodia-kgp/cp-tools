@@ -10,12 +10,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter> 
-        <NavBar />
+      <NavBar />
+      <BrowserRouter basename = "/cp-tools">
         <Switch>
-          <Route exact path = '/cp-tools' component = {Home} /> 
-          <Route exact path = '/cp-tools/problem-filter' component = {ProblemFilter} /> 
-          <Route path = '/cp-tools/*' component = {NotFound} /> 
+          <Route exact path = '/' component = {Home} /> 
+          <Route exact path = '/problem-filter' component = {ProblemFilter} /> 
+          <Route path = '*' component = {NotFound} /> 
         </Switch>
       </BrowserRouter>
 
