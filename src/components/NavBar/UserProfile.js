@@ -13,6 +13,20 @@ export default class UserProfile extends React.Component{
         this.usernameRef = React.createRef(); 
     }
 
+    componentWillMount(){
+        console.log('user from cache ', localStorage.getItem('user'));
+        if(localStorage.getItem('user'))
+            this.setState({
+                user : JSON.parse(localStorage.getItem('user')),
+            })
+    }
+
+    componentDidUpdate(prevState){
+        if(prevState !== this.state){
+            localStorage.setItem('user', JSON.stringify(this.state.user));
+        }
+    }
+
     login = async (event) => {
         event.preventDefault(); 
         let username = this.usernameRef.current.value; 
