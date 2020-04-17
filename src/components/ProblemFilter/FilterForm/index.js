@@ -60,9 +60,9 @@ export default class FilterForm extends React.Component{
             
                 <Form.Group>
                     <Form.Label> Difficulty </Form.Label>  
-                    <Form.Control style = {{'width' : '40%', 'margin-right' : '10px'}} type = "number" name = "lowerDiff" onChange = {this.handleInputChange}/>
+                    <Form.Control style = {{'width' : '40%', 'margin-right' : '10px'}} type = "number" step = "100" name = "lowerDiff" onChange = {this.handleInputChange}/>
                     <span> &nbsp; - &nbsp; </span>
-                    <Form.Control style = {{'width' : '40%', 'margin-left' : '10px'}} type = "number" name = "upperDiff" onChange = {this.handleInputChange} /> 
+                    <Form.Control style = {{'width' : '40%', 'margin-left' : '10px'}} type = "number" step = "100" name = "upperDiff" onChange = {this.handleInputChange} /> 
                 </Form.Group>
                 
                 <Button variant = "outline-primary" type = "submit"> Filter Problems !</Button>

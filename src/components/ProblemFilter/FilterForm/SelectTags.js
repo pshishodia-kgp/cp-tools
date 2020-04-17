@@ -32,13 +32,13 @@ export default class SelectTags extends React.Component{
     showSelectedTags = () => {
         let tagList = this.state.tags.map((tag) => {
             return(
-                <span> 
+                <React.Fragment> 
                 <span  className = "_selectedTags"> 
                     <span> {tag} </span>
                     <span value = {tag} onClick = {this.removeTag}>&#10007;  </span>  
                 </span> 
                 <span>&nbsp;&nbsp;</span> 
-                </span> 
+                </React.Fragment> 
             );
         });
         return (
