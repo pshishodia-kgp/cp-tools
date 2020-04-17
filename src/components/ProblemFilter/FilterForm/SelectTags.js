@@ -9,7 +9,7 @@ export default class SelectTags extends React.Component{
         }
         this.options = []
     }
-    
+
     removeTag = (event) => {
         let tag = event.target.getAttribute('value'); 
         let tags = this.state.tags.filter((currTag) => tag !== currTag);
@@ -39,12 +39,11 @@ export default class SelectTags extends React.Component{
                         <span> {tag} </span>
                         <span value = {tag} onClick = {this.removeTag}>&#10007;  </span>  
                     </span> 
-                    <span>&nbsp;&nbsp;</span> 
                 </React.Fragment> 
             );
         });
         return (
-            <div> {tagList} </div> 
+            <div style = {{'margin-bottom' : '5px'}}> {tagList} </div> 
         );
     }
 

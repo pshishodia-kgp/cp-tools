@@ -23,7 +23,12 @@
 }
 
 ._selectedTags{
-  background-color : lightgrey;  
+  background-color : #f0f0f0; 
+  /* font-size : 1.2rem;  */
+  padding : 4px 4px 4px 4px;
+  border-radius : 5%;
+  margin-right : 10px;
+  margin-bottom : 5px;
 }
 
 .form-rounded{
