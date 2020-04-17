@@ -4,7 +4,8 @@ import NavBar from './components/NavBar';
 import Home from './components/Home'
 import NotFound from './components/NotFound'
 import ProblemFilter from './components/ProblemFilter'; 
-import {BrowserRouter, Switch, Route} from 'react-router-dom'; 
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import Testing from './components/Testing'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Switch>
           <Route exact path = '/' component = {ProblemFilter} /> 
           <Route exact path = '/problem-filter' component = {ProblemFilter} /> 
+          <Route exact path = '/testing' component = {Testing} /> 
           <Route path = '*' component = {NotFound} /> 
         </Switch>
       </BrowserRouter>
