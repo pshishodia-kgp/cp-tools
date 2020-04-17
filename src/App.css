@@ -35,41 +35,42 @@
 ._selectedTags{
   background-color : lightgrey;  
 }
+
 .form-rounded{
   border-radius : 0.2rem; 
   padding : 2px 2px 2px 2px; 
   margin : 5px 5px 5px 5px;
 }
 
-input{
-  width : 100%; 
-  float : left; 
-}
-select{
-  width : 100%; 
-  float : left; 
-}
-
-label{
-  display : block; 
-  padding : 2px 2px 2px 2px; 
-  margin : 5px 5px 5px 5px;
-  float : left; 
-}
-
 .well{
-  border-radius : 0.2rem;
-  border : solid grey; 
-  padding : 10px 10px 10px 10px;
-  margin : 10px 10px 10px 10px; 
-}
-.btn{
-  background-color : #fff; 
+  position: relative;
+  padding: 1rem;
+  border: .2rem solid #ececec;
+  border-top-color: rgb(236, 236, 236);
+  border-top-style: solid;
+  border-top-width: 0.2rem;
+  border-right-color: rgb(236, 236, 236);
+  border-right-style: solid;
+  border-right-width: 0.2rem;
+  border-bottom-color: rgb(236, 236, 236);
+  border-bottom-style: solid;
+  border-bottom-width: 0.2rem;
+  border-left-color: rgb(236, 236, 236);
+  border-left-style: solid;
+  border-left-width: 0.2rem;
+  border-image-source: initial;
+  border-image-slice: initial;
+  border-image-width: initial;
+  border-image-outset: initial;
+  border-image-repeat: initial;
+  border-radius: 8px;
+  margin-top : 10px;
+  margin-bottom : 10px;
+  margin-right: 0;
+  margin-left: 0;
+  color: #212529;
 }
 
-form button{
-  text-align : center;
-}
 .table{
   
 }
@@ -80,9 +81,7 @@ form button{
 .rejected-problem{
   background-color : #ffe3e3 !important; 
 }
-button{
-  border-radius : 0.2rem;  
-}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

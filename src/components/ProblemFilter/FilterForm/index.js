@@ -1,5 +1,5 @@
 import React from 'react'; 
-import {Button, Form} from 'react-bootstrap';
+import {Button, Form, Row, Col} from 'react-bootstrap';
 import UserSearch from './UserSearch';
 import SelectTags from './SelectTags'; 
 
@@ -41,31 +41,35 @@ export default class FilterForm extends React.Component{
         }
 
         return (
-            <Form  onSubmit = {(event) => this.props.handleSubmit(event, this.state.filter, this.state.users)}>
+            <Form className = "well" onSubmit = {(event) => this.props.handleSubmit(event, this.state.filter, this.state.users)}>
                 <Form.Group> 
-                    <Form.Label> Users </Form.Label>
+                    {/* <Form.Label column xs = "2" sm = "2"> Users </Form.Label> */}
                     <UserSearch sendUsers = {(users) => this.setState({users : users})}/>   
                     <Form.Text className = "text-danger"> {invalidUsers} </Form.Text>
                 </Form.Group>
 
-                <Form.Group> 
-                    <Form.Label> Tags </Form.Label>
+                <Form.Group>
                     <SelectTags sendTags = {this.getTags} />  
                 </Form.Group>
 
                 <Form.Group> 
-                    <Form.Label> Base Round </Form.Label>
+                    {/* <Form.Label> Base Round </Form.Label> */}
                     <Form.Control type = "number" name = "baseRound" onChange = {this.handleInputChange} placeholder = "Base Round in numbers" />  
+                    <Form.Text className = "text-muted">This will generate problems after given round </Form.Text>
                 </Form.Group>
             
-                <Form.Group>
-                    <Form.Label> Difficulty </Form.Label>  
-                    <Form.Control style = {{'width' : '40%', 'margin-right' : '10px'}} type = "number" step = "100" name = "lowerDiff" onChange = {this.handleInputChange}/>
-                    <span> &nbsp; - &nbsp; </span>
-                    <Form.Control style = {{'width' : '40%', 'margin-left' : '10px'}} type = "number" step = "100" name = "upperDiff" onChange = {this.handleInputChange} /> 
+                <Form.Group as = {Row}>
+                    <Form.Label column xs = {3} sm = {3}> Difficulty </Form.Label>  
+                    <Col xs = {4} sm = {4}> 
+                        <Form.Control type = "number" step = "100" name = "lowerDiff" onChange = {this.handleInputChange}/>
+                    </Col> 
+
+                    <Col xs = {4} sm = {4} > 
+                        <Form.Control type = "number" step = "100" name = "upperDiff" onChange = {this.handleInputChange} /> 
+                    </Col> 
                 </Form.Group>
                 
-                <Button variant = "outline-primary" type = "submit"> Filter Problems !</Button>
+                <Button  variant = "outline-primary" type = "submit">Filter Problems !</Button>
             </Form>
         )
     }

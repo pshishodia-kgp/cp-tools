@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form} from 'react-bootstrap'; 
+import {Form, Col} from 'react-bootstrap'; 
 import {fetchSuggestions} from '../../../HelperFunctions/UserSuggestions'; 
 
 export default class UserSearch extends React.Component{
@@ -59,7 +59,7 @@ export default class UserSearch extends React.Component{
     render(){
         return(
             <React.Fragment>  
-                <Form.Control type = "text" ref = {this.userSearch} placeholder = "Space separated user-names" onChange = {this.handleUserChange} />
+                <Form.Control type = "text" ref = {this.userSearch} placeholder = "Space separated cf usernames" onChange = {this.handleUserChange} />
                 {this.showSuggestions()} 
             </React.Fragment> 
         )

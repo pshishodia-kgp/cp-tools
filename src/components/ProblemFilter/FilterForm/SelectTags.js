@@ -1,4 +1,5 @@
 import React from 'react'; 
+import {Col} from 'react-bootstrap'; 
 
 export default class SelectTags extends React.Component{
     constructor(props){
@@ -33,11 +34,11 @@ export default class SelectTags extends React.Component{
         let tagList = this.state.tags.map((tag) => {
             return(
                 <React.Fragment> 
-                <span  className = "_selectedTags"> 
-                    <span> {tag} </span>
-                    <span value = {tag} onClick = {this.removeTag}>&#10007;  </span>  
-                </span> 
-                <span>&nbsp;&nbsp;</span> 
+                    <span  className = "_selectedTags"> 
+                        <span> {tag} </span>
+                        <span value = {tag} onClick = {this.removeTag}>&#10007;  </span>  
+                    </span> 
+                    <span>&nbsp;&nbsp;</span> 
                 </React.Fragment> 
             );
         });
@@ -50,8 +51,8 @@ export default class SelectTags extends React.Component{
         return(
             <React.Fragment> 
                 {this.showSelectedTags()}
-                <select className = "form-rounded" onClick = {this.addTag}>
-                <option value=""></option>
+                <select className = "form-control" onClick = {this.addTag}>
+                <option value="">Select Tags</option>
                 {/* combine-tags-by-or */}
                 {/* <option value="combine-tags-by-or" title="*combine tags by OR">*combine tags by OR</option> */}
                     <option value="educational" title="educational">educational</option>
