@@ -13,6 +13,7 @@ export default class ProblemFilter extends React.Component{
             problems : [],
             solved : [],
             tried : [], 
+            invalidUsers : [], 
         }
         this.problems = [];
     }
@@ -35,6 +36,7 @@ export default class ProblemFilter extends React.Component{
             problems : problems,
             tried : resp.tried,
             solved : resp.solved,
+            invalidUsers : resp.invalidUsers,
         });
     }
 
@@ -42,7 +44,7 @@ export default class ProblemFilter extends React.Component{
         return (
             <Container> 
                 <Row> 
-                    <Col xs = "12" sm = "6"> <FilterForm handleSubmit = {this.handleSubmit}/>  </Col> 
+                    <Col xs = "12" sm = "6"> <FilterForm invalidUsers = {this.state.invalidUsers} handleSubmit = {this.handleSubmit}/>  </Col> 
                 </Row> 
 
                 <Row> 

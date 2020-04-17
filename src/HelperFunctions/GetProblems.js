@@ -1,11 +1,15 @@
 var problemSet = []; 
 
 const fetchProblemSet = async () => {
-    let resp = await fetch('https://codeforces.com/api/problemset.problems'); 
-    let data = await resp.json(); 
-    if(data.status === "OK"){
-        console.log('fetched raw problemset');  return data.result; 
-    }else return []; 
+    try{
+        let resp = await fetch('https://codeforces.com/api/problemset.problems'); 
+        let data = await resp.json(); 
+        if(data.status === "OK"){
+            console.log('fetched raw problemset');  return data.result; 
+        }else return []; 
+    }catch(err){
+        console.log(err); 
+    }
 }
 
 const fetchContests = async () => {

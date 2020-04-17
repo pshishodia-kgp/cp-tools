@@ -35,11 +35,17 @@ export default class FilterForm extends React.Component{
     }
 
     render(){
+        let invalidUsers = ''; 
+        if(this.props.invalidUsers.length){
+            invalidUsers = `Couldn't fetch data for ${this.props.invalidUsers.join(', ')} as they might be invalid usernames`
+        }
+
         return (
             <Form  onSubmit = {(event) => this.props.handleSubmit(event, this.state.filter, this.state.users)}>
                 <Form.Group> 
                     <Form.Label> Users </Form.Label>
-                    <UserSearch sendUsers = {(users) => this.setState({users : users})}/>  
+                    <UserSearch sendUsers = {(users) => this.setState({users : users})}/>   
+                    <Form.Text className = "text-danger"> {invalidUsers} </Form.Text>
                 </Form.Group>
 
                 <Form.Group> 

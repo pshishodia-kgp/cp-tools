@@ -2,21 +2,26 @@ var invalidUsers = [];
 
 const fetchUserData = async (user) =>{
     console.log('user : ', user); 
-    let resp = await fetch(`https://codeforces.com/api/user.status?handle=${user}`); 
-    let data = await resp.json();
-    if(data.status === "OK"){
-        console.log(`sucessfully fetched ${user} data`); return data.result;
-    }else{
+    try{
+        let resp = await fetch(`https://codeforces.com/api/user.status?handle=${user}`); 
+        let data = await resp.json();
+        if(data.status === "OK"){
+            console.log(`sucessfully fetched ${user} data`); return data.result;
+        }else{
+            invalidUsers.push(user); return []; 
+        }
+    }catch(err){
+        console.log(err); 
         invalidUsers.push(user); return []; 
     }
-} 
+}
 
 const findSubmissions = async (users) => {
     let solved = {}, tried = {};
     invalidUsers = []; 
     let promises = users.map((user) =>  fetchUserData(user)); 
     let contents = await Promise.all(promises); 
-
+    console.log('invalidUsers : ', invalidUsers);
     contents.map((content) => { 
         if(!content || !content.length)return ;
         let solvedHere = {}, triedHere = {}; 
