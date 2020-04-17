@@ -44,7 +44,7 @@ export default class UserProfile extends React.Component{
         return(
             <Form inline style = {{'float' : 'right'}} onSubmit = {this.login}> 
                 <Form.Control ref = {this.usernameRef} type="text" placeholder="cf username" className="mr-sm-2" /> 
-                <Button size = "sm" variant="outline-primary">Login</Button>
+                <Button type = "submit" size = "sm" variant="outline-primary">Login</Button>
             </Form>
         )
     }

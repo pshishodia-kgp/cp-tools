@@ -54,7 +54,7 @@ export default class FilterForm extends React.Component{
 
                 <Form.Group> 
                     {/* <Form.Label> Base Round </Form.Label> */}
-                    <Form.Control type = "number" name = "baseRound" onChange = {this.handleInputChange} placeholder = "Base Round in numbers" />  
+                    <Form.Control type = "number" name = "baseRound" onChange = {this.handleInputChange} placeholder = "Base Round" />  
                     <Form.Text className = "text-muted">This will generate problems after given round </Form.Text>
                 </Form.Group>
             
