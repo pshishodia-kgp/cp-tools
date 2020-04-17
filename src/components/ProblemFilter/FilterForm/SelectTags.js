@@ -5,10 +5,11 @@ export default class SelectTags extends React.Component{
     constructor(props){
         super(props); 
         this.state = {
-            tags : [],
+            tags : this.props.cachedTags,
         }
         this.options = []
     }
+    
     removeTag = (event) => {
         let tag = event.target.getAttribute('value'); 
         let tags = this.state.tags.filter((currTag) => tag !== currTag);

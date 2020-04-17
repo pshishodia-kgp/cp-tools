@@ -13,6 +13,10 @@ export default class UserSearch extends React.Component{
         this.userSearch = React.createRef();
     }
 
+    componentDidMount(){
+        this.userSearch.current.value = this.props.cachedUsers.join(' '); 
+    }
+
     updateSuggestions = async (query) => {
         let result = await fetchSuggestions(query, this.maxSuggestions); 
         this.setState({
