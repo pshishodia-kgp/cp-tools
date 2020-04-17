@@ -8,17 +8,17 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+  console.log(process.env.PUBLIC_URL, 'heeloo')
   return (
     <div className="App">
       <NavBar />
-      <BrowserRouter basename = "/cp-tools">
+      <BrowserRouter>
         <Switch>
-          <Route exact path = '/' component = {Home} /> 
+          <Route exact path = '/' component = {ProblemFilter} /> 
           <Route exact path = '/problem-filter' component = {ProblemFilter} /> 
           <Route path = '*' component = {NotFound} /> 
         </Switch>
       </BrowserRouter>
-
     </div>
   );
 }

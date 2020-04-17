@@ -8,12 +8,12 @@ export default class FilterForm extends React.Component{
         super(props);
         this.state = {
             filter : {
-                tags : ['educational'], 
-                lowerDiff : '2000', 
-                upperDiff : '2100',
+                tags : [], 
+                lowerDiff : '', 
+                upperDiff : '',
                 baseRound : '',
             },
-            users : ['Black.n.White', 'TheFool'],
+            users : [],
         } 
     }
 

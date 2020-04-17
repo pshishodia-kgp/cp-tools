@@ -1,7 +1,7 @@
 var problemSet = []; 
 
 const fetchProblemSet = async () => {
-    let resp = await fetch('http://codeforces.com/api/problemset.problems'); 
+    let resp = await fetch('https://codeforces.com/api/problemset.problems'); 
     let data = await resp.json(); 
     if(data.status === "OK"){
         console.log('fetched raw problemset');  return data.result; 
@@ -9,7 +9,7 @@ const fetchProblemSet = async () => {
 }
 
 const fetchContests = async () => {
-    let resp = await fetch('http://codeforces.com/api/contest.list'); 
+    let resp = await fetch('https://codeforces.com/api/contest.list'); 
     let data = await resp.json(); 
     if(data.status === "OK"){
         console.log('fetched contests again'); return data.result; 
@@ -45,12 +45,12 @@ const getProblemSet = async () => {
     return problemSet; 
 }
 
-const getValidProblems = async (solved) => {
-    let problems = await getProblemSet(); 
-    return problems.filter(problem => !(problem.name in solved)); 
-}
+// const getValidProblems = async (solved) => {
+//     let problems = await getProblemSet(); 
+//     return problems.filter(problem => !(problem.name in solved)); 
+// }
 
 export{
     getProblemSet, 
-    getValidProblems,
+    // getValidProblems,
 }

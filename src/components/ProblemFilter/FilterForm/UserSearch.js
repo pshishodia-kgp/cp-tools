@@ -32,7 +32,7 @@ export default class UserSearch extends React.Component{
             currentUser : newUser, 
         }); 
 
-        this.props.sendUsers(text.split(' '));
+        this.props.sendUsers(text.trim().split(' '));
 
         if(newUser.length < 3)newUser = '';
         this.updateSuggestions(newUser); 

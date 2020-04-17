@@ -5,10 +5,10 @@ export default class UserProfile extends React.Component{
     constructor(props){
         super(props); 
         this.state = {
-            user : {
-                titlePhoto : '//userpic.codeforces.com/660745/title/1c9bf68721a715f4.jpg'
-            },
-            // user : null, 
+            // user : {
+            //     titlePhoto : '//userpic.codeforces.com/660745/title/1c9bf68721a715f4.jpg'
+            // },
+            user : null, 
         }
         this.usernameRef = React.createRef(); 
     }

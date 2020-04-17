@@ -20,7 +20,7 @@ export default class ProblemFilter extends React.Component{
     componentDidMount = async () => {
         this.problems = await getProblemSet();
         this.setState({
-            problems : this.problems.slice(1, 50),
+            problems : this.problems.slice(0, Math.min(this.problems.length, 100)),
         });
     }
 
@@ -30,6 +30,7 @@ export default class ProblemFilter extends React.Component{
 
         let validProblems = await getProblemSet(); 
         let problems = await filterProblems(validProblems, filter);
+        problems = problems.slice(0, Math.min(problems.length, 100)); 
         this.setState({
             problems : problems,
             tried : resp.tried,

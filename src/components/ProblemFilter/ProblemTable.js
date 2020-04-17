@@ -140,11 +140,11 @@ export default class ProblemTable extends React.Component{
         if(mode === 'all'){
             problems = this.props.problems; 
         }else if(mode === 'solved'){
-            problems = this.state.problems.filter((problem) => {
+            problems = this.props.problems.filter((problem) => {
                 return this.triedCount(problem.name) > 0 && this.triedCount(problem.name) === this.solvedCount(problem.name); 
             });
         }else if(mode === 'unsolved'){
-            problems = this.state.problems.filter((problem) => {
+            problems = this.props.problems.filter((problem) => {
                 return this.solvedCount(problem.name) === 0; 
             });
         }
