@@ -13,7 +13,8 @@ export default class UserProfile extends React.Component{
         this.usernameRef = React.createRef(); 
     }
 
-    login = async () => {
+    login = async (event) => {
+        event.preventDefault(); 
         let username = this.usernameRef.current.value; 
         let resp = await fetch(`https://codeforces.com/api/user.info?handles=${username}`); 
         let data = await resp.json(); 
@@ -33,18 +34,18 @@ export default class UserProfile extends React.Component{
     profilePic = () => {
         return(
             <React.Fragment style = {{'float' : 'right'}}> 
-                <Image src = {`https:${this.state.user.titlePhoto}`} style = {{'height' : 'auto', 'width' :'40px', 'float' : 'right',}} roundedCircle/>
-                <Button variant = "outline-primary" onClick = {this.logout}> Logout </Button> 
+                <Button style = {{'margin-right' : '10px'}}size = "sm" variant = "outline-primary" onClick = {this.logout}> Logout </Button> 
+                <Image src = {`https:${this.state.user.titlePhoto}`} style = {{'height' : 'auto', 'width' :'40px'}} roundedCircle/>
             </React.Fragment>
         )
     }
 
     searchBar = () => {
         return(
-            <React.Fragment> 
-                <Form.Control ref = {this.usernameRef} type="text" placeholder="Cf username" className="mr-sm-2" /> 
-                <Button variant="outline-primary" onClick = {this.login}>Login</Button>
-            </React.Fragment>
+            <Form inline style = {{'float' : 'right'}} onSubmit = {this.login}> 
+                <Form.Control ref = {this.usernameRef} type="text" placeholder="cf username" className="mr-sm-2" /> 
+                <Button size = "sm" variant="outline-primary">Login</Button>
+            </Form>
         )
     }
     
@@ -53,9 +54,9 @@ export default class UserProfile extends React.Component{
         if(this.state.user)element = this.profilePic; 
         else element = this.searchBar; 
         return(
-            <Form inline style = {{'float' : 'right'}}> 
+            <React.Fragment justify-content-end> 
                 {element()}
-            </Form> 
+            </React.Fragment> 
         )
     }
 }
