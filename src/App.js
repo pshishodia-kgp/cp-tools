@@ -7,6 +7,10 @@ import ProblemFilter from './components/ProblemFilter';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import Testing from './components/Testing'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ReactGA from 'react-ga'; 
+
+ReaactGA.initialize('163942936'); 
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 // console.log(window.location.pathname + window.location.search);
 function App() {
