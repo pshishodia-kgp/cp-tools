@@ -16,11 +16,10 @@ export default class FilterForm extends React.Component{
             users : [],
         }
         if(localStorage.getItem('filter')){
-            console.log('localStorage : ', localStorage); 
             this.cached.filter = JSON.parse(localStorage.getItem('filter')); 
             this.cached.users = JSON.parse(localStorage.getItem('filterUsers')); 
+            this.props.handleSubmit(null, this.cached.filter, this.cached.users); 
         }
-        console.log('this.cached : ', this.cached); 
         this.state = this.cached;
     }
 

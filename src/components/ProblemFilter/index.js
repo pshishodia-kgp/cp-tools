@@ -26,7 +26,7 @@ export default class ProblemFilter extends React.Component{
     }
 
     handleSubmit = async (event, filter, users) => {
-        event.preventDefault();
+        if(event)event.preventDefault();
         let resp = await getSubmissions(users); 
 
         let validProblems = await getProblemSet(); 
