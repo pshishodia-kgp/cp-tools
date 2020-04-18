@@ -18,8 +18,8 @@ export default class FilterForm extends React.Component{
         if(localStorage.getItem('filter')){
             this.cached.filter = JSON.parse(localStorage.getItem('filter')); 
             this.cached.users = JSON.parse(localStorage.getItem('filterUsers')); 
-            this.props.handleSubmit(null, this.cached.filter, this.cached.users); 
         }
+        this.props.handleSubmit(null, this.cached.filter, this.cached.users); 
         this.state = this.cached;
     }
 
