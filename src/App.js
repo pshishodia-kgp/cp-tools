@@ -9,7 +9,7 @@ import Testing from './components/Testing';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactGA from 'react-ga'; 
 
-ReaactGA.initialize('163942936'); 
+ReactGA.initialize('163942936'); 
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 // console.log(window.location.pathname + window.location.search);
