@@ -43,7 +43,7 @@ export default class SelectTags extends React.Component{
             );
         });
         return (
-            <div style = {{'margin-bottom' : '5px'}}> {tagList} </div> 
+            <div style = {{'marginBottom' : '5px'}}> {tagList} </div> 
         );
     }
 

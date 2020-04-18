@@ -18,7 +18,7 @@ export default class ProblemFilter extends React.Component{
         this.problems = [];
     }
 
-    componentDidMount = async () => {
+    componentWillMount = async () => {
         this.problems = await getProblemSet();
         this.setState({
             problems : this.problems.slice(0, Math.min(this.problems.length, 500)),
@@ -27,10 +27,13 @@ export default class ProblemFilter extends React.Component{
 
     handleSubmit = async (event, filter, users) => {
         if(event)event.preventDefault();
+        if(!this.problems.length){
+            this.problems = await getProblemSet(); 
+        }
+        let problems = await filterProblems(this.problems, filter);
         let resp = await getSubmissions(users); 
 
-        let validProblems = await getProblemSet(); 
-        let problems = await filterProblems(validProblems, filter);
+        // let validProblems = await getProblemSet(); 
         problems = problems.slice(0, Math.min(problems.length, 500)); 
         this.setState({
             problems : problems,

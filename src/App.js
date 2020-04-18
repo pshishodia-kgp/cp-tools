@@ -8,6 +8,7 @@ import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import Testing from './components/Testing'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// console.log(window.location.pathname + window.location.search);
 function App() {
   console.log(process.env.PUBLIC_URL, 'heeloo')
   return (

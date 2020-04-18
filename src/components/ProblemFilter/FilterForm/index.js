@@ -24,7 +24,6 @@ export default class FilterForm extends React.Component{
     }
 
     saveDefaultFilter = (filter, users) => {
-        console.log('filter : ', filter, 'users : ', users); 
         localStorage.setItem('filter', JSON.stringify(filter)); 
         localStorage.setItem('filterUsers', JSON.stringify(users)); 
     }
@@ -81,7 +80,7 @@ export default class FilterForm extends React.Component{
                     </Col> 
                 </Form.Group>
                 
-                <Button variant = "outline-primary" type = "submit" style = {{'margin-right' : '5px'}}>Filter Problems !</Button>
+                <Button variant = "outline-primary" type = "submit" style = {{'marginRight' : '5px'}}>Filter Problems !</Button>
                 <Button variant = "outline-primary" onClick = {() => this.saveDefaultFilter(this.state.filter, this.state.users)}>Save Filter as default</Button> 
             </Form>
         )

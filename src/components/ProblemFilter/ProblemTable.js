@@ -4,17 +4,34 @@ import {Table, Button, ButtonGroup} from 'react-bootstrap';
 export default class ProblemTable extends React.Component{
     constructor(props){
         super(props); 
-        this.state = {
+        this.cached = {
             tags : true,
-            sortOrder : {   // true for ascending
+            sortOrder : {   // true for ascending (arrow-up)
                 round : false,
                 name : true, 
                 rating : true,
                 solvedBy : true,
             },
+            problems : [],
             mode : 'all',
-            problems : this.props.problems,
             sortActive : 'round', 
+        }
+        if(localStorage.getItem('problemTableState')){
+            this.cached = JSON.parse(localStorage.getItem('problemTableState')); 
+        }
+        this.cached.problems = this.props.problems; 
+        this.state = this.cached; 
+    }
+
+    componentWillUpdate(nextProps, nextState){
+        if(nextState !== this.state){
+            let cached = {
+                tags : nextState.tags,
+                sortOrder : nextState.sortOrder,
+                mode : nextState.mode,
+                sortActive : nextState.sortActive,
+            }
+            localStorage.setItem('problemTableState', JSON.stringify(cached));
         }
     }
 
@@ -22,7 +39,7 @@ export default class ProblemTable extends React.Component{
         if(this.props.problems !== nextProps.problems){
             this.setState({ 
                 problems : nextProps.problems,
-            }, this.changeMode('all'));
+            },() => {this.handleMode(this.state.mode, false); });
         }
     }
     triedCount = (problemName) => {
@@ -32,7 +49,7 @@ export default class ProblemTable extends React.Component{
         return (problemName in this.props.solved)? this.props.solved[problemName] : 0; 
     }
 
-    handleSorting = (fieldName) => {
+    handleSorting = (fieldName, toggleOrder = true) => {
         let problems, sortActive, sortOrder = this.state.sortOrder;  
         if(fieldName === 'round'){
             problems = this.state.problems.sort((a, b) => {
@@ -54,18 +71,18 @@ export default class ProblemTable extends React.Component{
         }else if(fieldName === 'solvedBy'){
             problems = this.state.problems.sort((a, b) => {
                 if(this.triedCount(a.name) === 0 && this.triedCount(b.name) === 0)return 0; 
-                if(this.triedCount(a.name) === 0)return 1; 
-                if(this.triedCount(b.name) === 0)return -1; 
-                if(this.solvedCount(a.name) === this.solvedCount(b.name))return this.triedCount(a.name) - this.triedCount(b.name); 
+                if(this.triedCount(a.name) === 0)return -1; 
+                if(this.triedCount(b.name) === 0)return 1; 
+                if(this.solvedCount(a.name) === this.solvedCount(b.name))return this.triedCount(b.name) - this.triedCount(a.name); 
                 return this.solvedCount(a.name) - this.solvedCount(b.name); 
             })
         }
 
+        if(toggleOrder)sortOrder[fieldName] = !sortOrder[fieldName];
         if(!sortOrder[fieldName]){
             problems = problems.reverse(); 
         }
-        sortActive = fieldName; 
-        sortOrder[fieldName] = !sortOrder[fieldName]; 
+        sortActive = fieldName;  
 
         this.setState({
             problems : problems, 
@@ -90,7 +107,7 @@ export default class ProblemTable extends React.Component{
                     <th>
                         Name
                         {this.getIcon('name')}
-                        <Button variant = "outline-dark" style = {{'float' : 'right'}} onClick = {() => this.setState({tags : !this.state.tags})} >ToggleTags </Button> 
+                        <Button size = "sm" variant = "outline-dark" style = {{'float' : 'right'}} onClick = {() => this.setState({tags : !this.state.tags})} >ToggleTags </Button> 
                     </th> 
 
                     <th>
@@ -135,7 +152,7 @@ export default class ProblemTable extends React.Component{
         });
     }
 
-    changeMode = (mode) => {
+    handleMode = (mode, toggle = true) => {
         let problems = []; 
         if(mode === 'all'){
             problems = this.props.problems; 
@@ -152,7 +169,8 @@ export default class ProblemTable extends React.Component{
         this.setState({
             problems : problems, 
             mode : mode,
-        })
+        },() => this.handleSorting(this.state.sortActive, false)
+        )
     } 
 
     render(){
@@ -171,9 +189,9 @@ export default class ProblemTable extends React.Component{
                 {/* <span>Total problems : {this.state.problems.length} </span>  */}
 
                 <ButtonGroup> 
-                    <Button onClick = {() => this.changeMode('solved')} variant = {modeVariant['solved']}> Solved</Button>
-                    <Button onClick = {() => this.changeMode('unsolved')} variant = {modeVariant['unsolved']}> Unsolved </Button> 
-                    <Button onClick = {() => this.changeMode('all')} variant = {modeVariant['all']}> All </Button>
+                    <Button onClick = {() => this.handleMode('solved')} variant = {modeVariant['solved']}> Solved</Button>
+                    <Button onClick = {() => this.handleMode('unsolved')} variant = {modeVariant['unsolved']}> Unsolved </Button> 
+                    <Button onClick = {() => this.handleMode('all')} variant = {modeVariant['all']}> All </Button>
                 </ButtonGroup> 
                 
                 <Table className = "table" striped bordered style = {{borderRadius : '5px'}}> 

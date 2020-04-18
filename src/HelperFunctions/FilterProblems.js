@@ -1,4 +1,4 @@
-const filterProblems= (problems, filterSpecs) => {
+const filterProblems= async (problems, filterSpecs) => {
     console.log(filterSpecs); 
     return problems.filter( (problem) => {
         for(let tag of filterSpecs.tags){

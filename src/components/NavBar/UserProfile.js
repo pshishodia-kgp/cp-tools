@@ -4,21 +4,16 @@ import {Form, Button, Image} from 'react-bootstrap';
 export default class UserProfile extends React.Component{
     constructor(props){
         super(props); 
-        this.state = {
+        this.cached = {
             // user : {
             //     titlePhoto : '//userpic.codeforces.com/660745/title/1c9bf68721a715f4.jpg'
             // },
             user : null, 
         }
-        this.usernameRef = React.createRef(); 
-    }
-
-    componentWillMount(){
-        console.log('user from cache ', localStorage.getItem('user'));
         if(localStorage.getItem('user'))
-            this.setState({
-                user : JSON.parse(localStorage.getItem('user')),
-            })
+            this.cached.user = JSON.parse(localStorage.getItem('user'));
+        this.state = this.cached;
+        this.usernameRef = React.createRef(); 
     }
 
     componentDidUpdate(prevState){
@@ -47,8 +42,8 @@ export default class UserProfile extends React.Component{
 
     profilePic = () => {
         return(
-            <React.Fragment style = {{'float' : 'right'}}> 
-                <Button style = {{'margin-right' : '10px'}}size = "sm" variant = "outline-primary" onClick = {this.logout}> Logout </Button> 
+            <React.Fragment > 
+                <Button style = {{'marginRight' : '10px'}}size = "sm" variant = "outline-primary" onClick = {this.logout}> Logout </Button> 
                 <Image src = {`https:${this.state.user.titlePhoto}`} style = {{'height' : 'auto', 'width' :'40px'}} roundedCircle/>
             </React.Fragment>
         )
@@ -68,7 +63,7 @@ export default class UserProfile extends React.Component{
         if(this.state.user)element = this.profilePic; 
         else element = this.searchBar; 
         return(
-            <React.Fragment justify-content-end> 
+            <React.Fragment> 
                 {element()}
             </React.Fragment> 
         )

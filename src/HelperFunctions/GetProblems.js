@@ -5,7 +5,7 @@ const fetchProblemSet = async () => {
         let resp = await fetch('https://codeforces.com/api/problemset.problems'); 
         let data = await resp.json(); 
         if(data.status === "OK"){
-            console.log('fetched raw problemset');  return data.result; 
+            console.log('fetched problemset again');  return data.result; 
         }else return []; 
     }catch(err){
         console.log(err); 
