@@ -1,4 +1,4 @@
-var problemSet = []; 
+// var problemSet = [];
 
 const fetchProblemSet = async () => {
     try{
@@ -21,7 +21,8 @@ const fetchContests = async () => {
 }
 
 const getProblemSet = async () => {
-    if(problemSet.length)return problemSet;
+    // if(problemSet.length)return problemSet;
+    let problemSet = []; 
 
     let response = await Promise.all([
         fetchProblemSet(), 
